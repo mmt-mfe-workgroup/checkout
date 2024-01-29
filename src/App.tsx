@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { useForm, SubmitHandler } from "react-hook-form"
 import './App.css'
+// @ts-ignore
 const RemoteButton = lazy(() => import('UI/Button'));
 
 type Fields = {
