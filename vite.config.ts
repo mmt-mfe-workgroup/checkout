@@ -6,7 +6,10 @@ const mfe = () => federation({
   name: 'checkout',
   filename: 'remoteEntry.js',
   exposes: {
-      './Checkout': './src/RemoteApp',
+      './App': './src/RemoteApp',
+  },
+  remotes: {
+    UI: "https://rude-clouds.surge.sh/assets/remoteEntry.js",
   },
   shared: ['react', 'react-dom']
 })
