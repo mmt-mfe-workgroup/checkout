@@ -1,6 +1,7 @@
-import { lazy, Suspense } from 'react';
+// @ts-nocheck
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from "react-hook-form"
-
+import {Meta, MetaProps} from './components/meta'
 import './App.css'
 
 const RemoteButton = lazy(() => import('UI/Button'));
@@ -11,22 +12,41 @@ type Fields = {
   email: string
 }
 
-function App() {
+const metaparams: MetaProps = {
+  framework: "React@18.2",
+  app: "mfe-checkout@0.0.1",
+  cdn: "surge.sh",
+  shared: ['UI/Button'],
+  listen: ['view:x-ray']
+}
 
+function App() {
+  const [ show, setShow ] = useState<boolean>(false)
   const {
     register,
     handleSubmit
   } = useForm<Fields>()
 
+  useEffect(() => {
+    window.addEventListener('view:x-ray', xHandler)
+    return () => window.removeEventListener('view:x-ray', xHandler)
+  }, [])
+
+  const xHandler = ({ detail }: CustomEvent<{ detail: boolean }>) => {
+    setShow(detail)
+  }
+    
   const onSubmit: SubmitHandler<Fields> = (data) => {
     console.log('form submission', data)
   }
 
   return (
-    <div id="island" className="bg-slate-200 px-12">
-      <section className="py-6">
+    <div id="island" className= "px-12">
+      { show && Meta(metaparams)}
+      { !show &&
+      <section id="app" className="py-8">
       <h2 className="text-2xl font-bold text-gray-900">Checkout App</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm mx-auto py-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm mx-auto py-6">
       <p className="max-w-sm mb-5 text-left">Lets take your details so we can take payment quickly and get your items dispatched straight away..</p>
         <div className="mb-5 text-left">
           <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your first name</label>
@@ -44,7 +64,7 @@ function App() {
           <RemoteButton label="Submit" type="submit"/>
         </Suspense>
         </form>
-      </section>
+      </section>}
     </div>
   )
 }

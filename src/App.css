@@ -5,6 +5,18 @@
   text-align: center;
 }
 
+.tag {
+  padding: .25em 1em;
+  background-color: rgba(255,255,255,.125);
+  border: .05em solid pink;
+  border-radius: .5em;
+  margin-bottom: .5em;
+}
+.code {
+  padding: 1em;
+  background-color: rgba(255,255,255,.125);
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
