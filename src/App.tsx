@@ -28,14 +28,15 @@ function App() {
   } = useForm<Fields>()
 
   useEffect(() => {
-    window.addEventListener('view:x-ray', xHandler)
-    return () => window.removeEventListener('view:x-ray', xHandler)
+    window.addEventListener('view:x-ray', xHandler as never)
+    return () => {
+      window.removeEventListener('view:x-ray', xHandler as never)
+    }
   }, [])
-
-  const xHandler = ({ detail }: CustomEvent<{ detail: boolean }>) => {
+  
+  const xHandler = ({ detail }: CustomEvent<boolean>) => {
     setShow(detail)
-  }
-    
+  }  
   const onSubmit: SubmitHandler<Fields> = (data) => {
     console.log('form submission', data)
   }
